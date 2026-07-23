@@ -8,3 +8,14 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: validate
+
+logging:
+  level:
+    root: ${LOG_LEVEL:WARN}
+    com.template: INFO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health

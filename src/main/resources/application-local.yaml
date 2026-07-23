@@ -12,3 +12,14 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop
+
+logging:
+  level:
+    root: INFO
+    com.template: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
