@@ -4,10 +4,10 @@ WORKDIR /app
 
 COPY .mvn/ .mvn/
 COPY mvnw pom.xml ./
-RUN ./mvnw dependency:go-offline -B
+RUN ./mvnw dependency:go-offline --no-transfer-progress -B
 
 COPY src/ src/
-RUN ./mvnw package -DskipTests -B
+RUN ./mvnw package -DskipTests --no-transfer-progress -B
 
 # Stage 2: Runtime
 FROM eclipse-temurin:21-jre
@@ -21,8 +21,5 @@ RUN chown -R appuser:appgroup /app
 USER appuser
 
 EXPOSE 8080
-
-HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
-  CMD curl -f http://localhost:8080/actuator/health || exit 1
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
