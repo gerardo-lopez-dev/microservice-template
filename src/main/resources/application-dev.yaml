@@ -11,6 +11,12 @@ spring:
   flyway:
     enabled: true
 
+management:
+  endpoint:
+    health:
+      show-details: when-authorized
+      show-components: when-authorized
+
 logging:
   level:
     root: ${LOG_LEVEL:INFO}
