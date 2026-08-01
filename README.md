@@ -1,5 +1,8 @@
 # Microservice Template
 
+[![CI](https://github.com/gerardo-lopez-dev/microservice-template/actions/workflows/ci.yml/badge.svg)](https://github.com/gerardo-lopez-dev/microservice-template/actions/workflows/ci.yml)
+[![Coverage](https://img.shields.io/badge/coverage-80%25-brightgreen)]()
+
 Spring Boot 4.1 microservice template with Java 21, PostgreSQL, Docker support, and CI/CD pipeline.
 
 ## Tech Stack
@@ -24,11 +27,31 @@ Spring Boot 4.1 microservice template with Java 21, PostgreSQL, Docker support, 
 ```
 src/main/java/com/template/microservicetemplate/
 ├── MicroserviceTemplateApplication.java
+├── domain/                     # Pure domain — no framework deps
+│   ├── model/
+│   │   ├── entity/             # Domain entities (records/POJOs)
+│   │   └── valueobject/        # Value objects
+│   ├── port/
+│   │   ├── inbound/            # Use case interfaces
+│   │   └── outbound/           # Repository/gateway interfaces
+│   └── service/                # Domain service implementations
+├── application/                # Use cases, DTOs, mappers
+│   ├── usecase/
+│   ├── dto/
+│   │   ├── request/
+│   │   └── response/
+│   └── mapper/
+└── infrastructure/             # Framework code (Spring, JPA)
+    ├── config/
+    └── adapter/
+        ├── inbound/rest/       # REST controllers
+        └── outbound/persistence/ # JPA repositories + entities
 src/main/resources/
 ├── application.yaml            # Base config
 ├── application-local.yaml      # Local (H2 in-memory)
 ├── application-dev.yaml        # Dev (PostgreSQL)
-└── application-prod.yaml       # Production (PostgreSQL)
+├── application-prod.yaml       # Production (PostgreSQL)
+└── db/migration/               # Flyway migrations
 ```
 
 ## Running the Application
@@ -95,6 +118,7 @@ GitHub Actions workflow (`.github/workflows/ci.yml`) runs on push to `main`:
 2. Build and test
 3. Upload JaCoCo report
 4. Upload JAR artifact
+5. Build Docker image (main branch only)
 
 ## Docker
 
