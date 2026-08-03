@@ -13,7 +13,8 @@ import org.springframework.stereotype.Component;
 @Profile("prod")
 public class EnvironmentVariableValidator implements ApplicationRunner {
 
-	private static final List<String> REQUIRED_VARIABLES = List.of("DB_URL", "DB_USERNAME", "DB_PASSWORD");
+	private static final List<String> REQUIRED_VARIABLES = List.of("DB_URL", "DB_USERNAME",
+			"DB_PASSWORD");
 
 	private final Environment environment;
 
@@ -28,15 +29,16 @@ public class EnvironmentVariableValidator implements ApplicationRunner {
 
 	void validateRequiredVariables() {
 		List<String> missing = new ArrayList<>();
-		for (String variable : REQUIRED_VARIABLES) {
+		for ( String variable : REQUIRED_VARIABLES ) {
 			String value = environment.getProperty(variable);
-			if (value == null || value.isBlank()) {
+			if ( value == null || value.isBlank() ) {
 				missing.add(variable);
 			}
 		}
-		if (!missing.isEmpty()) {
+		if ( !missing.isEmpty() ) {
 			throw new IllegalStateException(
-					"Missing required environment variables for prod profile: " + String.join(", ", missing));
+					"Missing required environment variables for prod profile: "
+							+ String.join(", ", missing));
 		}
 	}
 

@@ -35,7 +35,8 @@ class EnvironmentVariableValidatorTest {
 
 	@Test
 	void failsWhenRequiredVariableBlank() {
-		when(environment.getProperty("DB_URL")).thenReturn("jdbc:postgresql://localhost:5432/prod_db");
+		when(environment.getProperty("DB_URL"))
+				.thenReturn("jdbc:postgresql://localhost:5432/prod_db");
 		when(environment.getProperty("DB_USERNAME")).thenReturn("   ");
 		when(environment.getProperty("DB_PASSWORD")).thenReturn("secret");
 
@@ -44,7 +45,8 @@ class EnvironmentVariableValidatorTest {
 
 	@Test
 	void passesWhenAllRequiredVariablesPresent() {
-		when(environment.getProperty("DB_URL")).thenReturn("jdbc:postgresql://localhost:5432/prod_db");
+		when(environment.getProperty("DB_URL"))
+				.thenReturn("jdbc:postgresql://localhost:5432/prod_db");
 		when(environment.getProperty("DB_USERNAME")).thenReturn("postgres");
 		when(environment.getProperty("DB_PASSWORD")).thenReturn("secret");
 
