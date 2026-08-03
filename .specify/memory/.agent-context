@@ -1,0 +1,15 @@
+# Agent Context — microservice-template
+
+This module is the base microservice template (Spring Boot 4.1 / Java 21 /
+PostgreSQL, Docker multi-stage, CI/CD). Every other microservice in the project
+is generated from it.
+
+- **Applies specs from**: `specs/specs/` (the specs submodule). The folder that
+  applies to this module is the template/infrastructure feature(s) — e.g.
+  `specs/specs/*/tasks/microservice-template.md`.
+- **Constitution cascade**: read the global constitution first at
+  `specs/.specify/memory/constitution.md`, then the local one at
+  `.specify/memory/constitution.md` if it exists (currently none — no local
+  overrides).
+- **Specs submodule is pinned to a tag** (`spec-v1.0.0`). Never move it to a new
+  tag on your own; propose spec changes through the specs repo PR flow.
