@@ -8,9 +8,14 @@
 .vscode
 target/
 build/
+dist/
+logs/
+*.log
 .env
 .env.*
 !.env.example
+*.credentials
+*secret*
 doc/
 *.md
 HELP.md
