@@ -22,11 +22,10 @@ public class DbHealthIndicator implements HealthIndicator {
 				Statement stmt = conn.createStatement()) {
 			stmt.execute("SELECT 1");
 			return Health.up().withDetail("database", "reachable").build();
-		} catch (Exception e) {
-			return Health.down()
-				.withDetail("database", "unreachable")
-				.withDetail("error", e.getMessage())
-				.build();
+		}
+		catch ( Exception e ) {
+			return Health.down().withDetail("database", "unreachable")
+					.withDetail("error", e.getMessage()).build();
 		}
 	}
 }
