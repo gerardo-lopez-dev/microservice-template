@@ -182,6 +182,57 @@ pull requests:
 | `coverage` | `test` | Generates and commits coverage badge |
 | `docker` | `build` | Builds Docker image (main + tags only) |
 
+## Database Migrations (Flyway)
+
+Flyway manages database schema versioning. Migrations run automatically on application startup.
+
+### Naming Convention
+
+```
+V{version}__{description}.sql
+```
+
+- `version`: sequential number (1, 2, 3...) or dotted (1.1, 1.2)
+- `description`: words separated by underscores
+- **Double underscore** between version and description
+
+| Valid | Invalid |
+|---|---|
+| `V1__init_schema.sql` | `v1_init.sql` (missing double underscore) |
+| `V2__add_tags_column.sql` | `V1_init_schema.sql` (single underscore) |
+
+**Never modify a migration that has already been applied.** Schema changes always go in new migrations.
+
+### Maven Commands
+
+```bash
+./mvnw flyway:migrate   # Apply pending migrations
+./mvnw flyway:info       # Show migration status
+./mvnw flyway:repair     # Repair schema history after fixing a failed migration
+./mvnw flyway:clean      # Drop all tables (local/test only, disabled in dev)
+```
+
+Example `flyway:info` output:
+```
++-----------+---------+-------------------+------+---------------------+---------+
+| Category  | Version | Description       | Type | Installed On        | State   |
++-----------+---------+-------------------+------+---------------------+---------+
+| Versioned | 1       | init schema       | SQL  | 2026-08-05 14:00:00 | Success |
++-----------+---------+-------------------+------+---------------------+---------+
+```
+
+### Repairing a Failed Migration (local dev only)
+
+1. Fix the SQL error in the migration file.
+2. Run `./mvnw flyway:repair` to clear the "Failed" state in the history table.
+3. Restart the application or run `./mvnw flyway:migrate`.
+
+### Schema History Table
+
+`flyway_schema_history` is Flyway's control table. It records every applied migration (version, checksum, status, timestamp). **Never modify this table manually** — Flyway manages it exclusively.
+
+Migration files must use **UTF-8 encoding** and be placed in `src/main/resources/db/migration/`.
+
 ## Docker
 
 Multi-stage Dockerfile:
