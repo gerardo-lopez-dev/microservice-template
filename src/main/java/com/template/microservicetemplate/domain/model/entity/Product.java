@@ -1,5 +1,9 @@
 package com.template.microservicetemplate.domain.model.entity;
 
+/**
+ * Código de ejemplo — eliminar o reemplazar al implementar el dominio real.
+ */
+
 import com.template.microservicetemplate.domain.model.valueobject.Money;
 import java.util.UUID;
 

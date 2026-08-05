@@ -24,35 +24,94 @@ Spring Boot 4.1 microservice template with Java 21, PostgreSQL, Docker support, 
 
 ## Project Structure
 
+El template sigue **Arquitectura Hexagonal** (Puertos y Adaptadores). Tres capas principales
+con reglas de dependencia estrictas:
+
+| Capa | Paquete | Propósito |
+|---|---|---|
+| **domain** | `domain/` | Lógica de negocio pura. Sin dependencias de frameworks. |
+| **application** | `application/` | Casos de uso, DTOs, mappers. Orquesta el dominio. |
+| **infrastructure** | `infrastructure/` | Adaptadores concretos: Spring, JPA, REST, mensajería. |
+
+#### Detalle de paquetes
+
+| Paquete | Propósito | Ejemplo |
+|---|---|---|
+| `domain.model.entity` | Entidades de dominio puras (sin anotaciones de framework) | `Product` |
+| `domain.model.valueobject` | Value Objects inmutables | `Money` |
+| `domain.model.event` | Eventos de dominio | (vacío, futuro) |
+| `domain.port.inbound` | Puertos de entrada (interfaces de caso de uso) | `CreateProductUseCase` |
+| `domain.port.outbound` | Puertos de salida (repositorios, gateways) | `ProductRepository` |
+| `domain.service.impl` | Servicios de dominio | (vacío, futuro) |
+| `application.usecase` | Implementaciones de casos de uso | `CreateProductUseCaseImpl` |
+| `application.dto.request` | DTOs de entrada | `CreateProductRequest` |
+| `application.dto.response` | DTOs de salida | `ProductResponse` |
+| `application.mapper` | Mappers entre entidades y DTOs | `ProductMapper` |
+| `infrastructure` | Punto de entrada `@SpringBootApplication` | `MicroserviceTemplateApplication` |
+| `infrastructure.config` | Configuraciones de Spring | `BeanConfig`, `DbHealthIndicator`, `EnvironmentVariableValidator` |
+| `infrastructure.adapter.inbound.rest` | Controladores REST | `ProductController` |
+| `infrastructure.adapter.inbound.messaging` | Consumers de mensajería | (vacío, futuro) |
+| `infrastructure.adapter.outbound.persistence` | Entidades JPA, repositorios Spring Data, adaptadores | `ProductJpaEntity`, `ProductJpaRepository`, `SpringProductRepository` |
+| `infrastructure.adapter.outbound.messaging` | Producers de mensajería | (vacío, futuro) |
+| `infrastructure.adapter.outbound.external` | Clientes de servicios externos (Feign, etc.) | (vacío, futuro) |
+
+Árbol completo de paquetes:
+
 ```
 src/main/java/com/template/microservicetemplate/
-├── MicroserviceTemplateApplication.java
-├── domain/                     # Pure domain — no framework deps
+├── domain/                                # Capa de dominio
 │   ├── model/
-│   │   ├── entity/             # Domain entities (records/POJOs)
-│   │   └── valueobject/        # Value objects
+│   │   ├── entity/                        # Entidades de dominio (puras, sin JPA)
+│   │   ├── valueobject/                   # Value Objects (Money, Address, etc.)
+│   │   └── event/                         # Eventos de dominio
 │   ├── port/
-│   │   ├── inbound/            # Use case interfaces
-│   │   └── outbound/           # Repository/gateway interfaces
-│   └── service/                # Domain service implementations
-├── application/                # Use cases, DTOs, mappers
-│   ├── usecase/
+│   │   ├── inbound/                       # Puertos de entrada (interfaces de caso de uso)
+│   │   └── outbound/                      # Puertos de salida (repositorios, gateways)
+│   └── service/
+│       └── impl/                          # Implementación de servicios de dominio
+├── application/                           # Capa de aplicación
+│   ├── usecase/                           # Implementaciones de casos de uso
 │   ├── dto/
-│   │   ├── request/
-│   │   └── response/
-│   └── mapper/
-└── infrastructure/             # Framework code (Spring, JPA)
-    ├── config/
+│   │   ├── request/                       # DTOs de entrada
+│   │   └── response/                      # DTOs de salida
+│   └── mapper/                            # Mappers entre entidades y DTOs
+└── infrastructure/                        # Capa de infraestructura
+    ├── MicroserviceTemplateApplication.java  # Punto de entrada (@SpringBootApplication)
+    ├── config/                            # Configuraciones de Spring
     └── adapter/
-        ├── inbound/rest/       # REST controllers
-        └── outbound/persistence/ # JPA repositories + entities
-src/main/resources/
-├── application.yaml            # Base config
-├── application-local.yaml      # Local (H2 in-memory)
-├── application-dev.yaml        # Dev (PostgreSQL)
-├── application-prod.yaml       # Production (PostgreSQL)
-└── db/migration/               # Flyway migrations
+        ├── inbound/
+        │   ├── rest/                      # Controladores REST
+        │   └── messaging/                 # Consumers de mensajería
+        └── outbound/
+            ├── persistence/               # Entidades JPA + repositorios Spring Data + adaptadores
+            ├── messaging/                 # Producers de mensajería
+            └── external/                  # Clientes de servicios externos (Feign, etc.)
 ```
+
+### Reglas de Dependencia
+
+```
+domain       → no importa de application ni infrastructure
+application  → puede importar de domain, no de infrastructure
+infrastructure → puede importar de domain y application
+```
+
+El dominio es el centro. La infraestructura implementa los contratos que el dominio define.
+Las clases de ejemplo (`Product`, `Money`, `ProductController`, etc.) están marcadas con
+`Código de ejemplo` en su Javadoc: elimínalas o reemplázalas al implementar tu dominio real.
+
+### Renaming the Template
+
+Al clonar este template para un nuevo microservicio, renombra:
+
+1. **Directorio del paquete base**: renombra `microservicetemplate` en
+   `src/main/java/com/template/` y `src/test/java/com/template/`.
+2. **Declaraciones `package`**: actualiza el `package` en todos los archivos `.java`.
+3. **`<groupId>` en `pom.xml`**: cambia `com.template` por tu groupId.
+4. **Clase principal**: renombra `MicroserviceTemplateApplication` y actualiza todas las
+   referencias (tests, `@SpringBootApplication`, `main` method).
+5. **Configuración Docker**: actualiza el nombre de la imagen en `docker-compose.yml` y
+   referencias en el `Dockerfile`.
 
 ## Running the Application
 
