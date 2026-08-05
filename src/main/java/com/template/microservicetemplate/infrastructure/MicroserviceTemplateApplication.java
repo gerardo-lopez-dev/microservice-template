@@ -1,4 +1,4 @@
-package com.template.microservicetemplate;
+package com.template.microservicetemplate.infrastructure;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

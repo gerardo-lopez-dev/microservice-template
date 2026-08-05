@@ -1,5 +1,9 @@
 package com.template.microservicetemplate.domain.model.valueobject;
 
+/**
+ * Código de ejemplo — eliminar o reemplazar al implementar el dominio real.
+ */
+
 import java.math.BigDecimal;
 import java.util.Currency;
 

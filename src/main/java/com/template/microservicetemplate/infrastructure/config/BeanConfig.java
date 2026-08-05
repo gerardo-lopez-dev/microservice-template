@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class BeanConfig {
 	@Bean
-	ProductRepository productRepository(SpringProductRepository springRepo) {
-		return new ProductJpaRepository(springRepo);
+	ProductRepository productRepository(ProductJpaRepository springRepo) {
+		return new SpringProductRepository(springRepo);
 	}
 
 	@Bean

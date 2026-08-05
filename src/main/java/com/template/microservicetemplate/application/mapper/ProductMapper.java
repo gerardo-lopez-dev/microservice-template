@@ -1,5 +1,9 @@
 package com.template.microservicetemplate.application.mapper;
 
+/**
+ * Código de ejemplo — eliminar o reemplazar al implementar el dominio real.
+ */
+
 import com.template.microservicetemplate.application.dto.response.ProductResponse;
 import com.template.microservicetemplate.domain.model.entity.Product;
 

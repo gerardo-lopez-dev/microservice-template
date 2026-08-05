@@ -1,5 +1,9 @@
 package com.template.microservicetemplate.application.usecase;
 
+/**
+ * Código de ejemplo — eliminar o reemplazar al implementar el dominio real.
+ */
+
 import com.template.microservicetemplate.domain.model.entity.Product;
 import com.template.microservicetemplate.domain.model.valueobject.Money;
 import com.template.microservicetemplate.domain.port.inbound.CreateProductUseCase;

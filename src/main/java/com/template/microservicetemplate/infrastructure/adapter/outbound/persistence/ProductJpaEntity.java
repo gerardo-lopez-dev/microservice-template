@@ -1,5 +1,9 @@
 package com.template.microservicetemplate.infrastructure.adapter.outbound.persistence;
 
+/**
+ * Código de ejemplo — eliminar o reemplazar al implementar el dominio real.
+ */
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
