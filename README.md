@@ -33,6 +33,28 @@ con reglas de dependencia estrictas:
 | **application** | `application/` | Casos de uso, DTOs, mappers. Orquesta el dominio. |
 | **infrastructure** | `infrastructure/` | Adaptadores concretos: Spring, JPA, REST, mensajería. |
 
+#### Detalle de paquetes
+
+| Paquete | Propósito | Ejemplo |
+|---|---|---|
+| `domain.model.entity` | Entidades de dominio puras (sin anotaciones de framework) | `Product` |
+| `domain.model.valueobject` | Value Objects inmutables | `Money` |
+| `domain.model.event` | Eventos de dominio | (vacío, futuro) |
+| `domain.port.inbound` | Puertos de entrada (interfaces de caso de uso) | `CreateProductUseCase` |
+| `domain.port.outbound` | Puertos de salida (repositorios, gateways) | `ProductRepository` |
+| `domain.service.impl` | Servicios de dominio | (vacío, futuro) |
+| `application.usecase` | Implementaciones de casos de uso | `CreateProductUseCaseImpl` |
+| `application.dto.request` | DTOs de entrada | `CreateProductRequest` |
+| `application.dto.response` | DTOs de salida | `ProductResponse` |
+| `application.mapper` | Mappers entre entidades y DTOs | `ProductMapper` |
+| `infrastructure` | Punto de entrada `@SpringBootApplication` | `MicroserviceTemplateApplication` |
+| `infrastructure.config` | Configuraciones de Spring | `BeanConfig`, `DbHealthIndicator`, `EnvironmentVariableValidator` |
+| `infrastructure.adapter.inbound.rest` | Controladores REST | `ProductController` |
+| `infrastructure.adapter.inbound.messaging` | Consumers de mensajería | (vacío, futuro) |
+| `infrastructure.adapter.outbound.persistence` | Entidades JPA, repositorios Spring Data, adaptadores | `ProductJpaEntity`, `ProductJpaRepository`, `SpringProductRepository` |
+| `infrastructure.adapter.outbound.messaging` | Producers de mensajería | (vacío, futuro) |
+| `infrastructure.adapter.outbound.external` | Clientes de servicios externos (Feign, etc.) | (vacío, futuro) |
+
 Árbol completo de paquetes:
 
 ```
