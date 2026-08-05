@@ -83,7 +83,7 @@ jobs:
           jacoco-csv-file: target/site/jacoco/jacoco.csv
           badges-directory: .github/badges
           generate-coverage-badge: true
-      - if: github.ref == 'refs/heads/main'
+      - if: github.ref != 'refs/heads/main'
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "docs: auto-generated coverage badge [skip ci]"
