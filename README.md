@@ -1,7 +1,7 @@
 # Microservice Template
 
 [![CI](https://github.com/gerardo-lopez-dev/microservice-template/actions/workflows/ci.yml/badge.svg)](https://github.com/gerardo-lopez-dev/microservice-template/actions/workflows/ci.yml)
-[![Coverage](https://img.shields.io/badge/coverage-80%25-brightgreen)]()
+[![Coverage](.github/badges/jacoco.svg)](https://github.com/gerardo-lopez-dev/microservice-template/actions/workflows/ci.yml)
 
 Spring Boot 4.1 microservice template with Java 21, PostgreSQL, Docker support, and CI/CD pipeline.
 
@@ -112,13 +112,16 @@ Copy `.env.example` to `.env` and adjust values as needed.
 
 ## CI/CD
 
-GitHub Actions workflow (`.github/workflows/ci.yml`) runs on push to `main`:
+GitHub Actions workflow (`.github/workflows/ci.yml`) runs on push to `main` and
+pull requests:
 
-1. Check formatting (Spotless)
-2. Build and test
-3. Upload JaCoCo report
-4. Upload JAR artifact
-5. Build Docker image (main branch only)
+| Job | Depends on | What it does |
+|---|---|---|
+| `lint` | — | Checks formatting with Spotless |
+| `test` | `lint` | Runs unit tests, uploads JaCoCo data |
+| `build` | `test` | Compiles and packages without re-running tests |
+| `coverage` | `test` | Generates and commits coverage badge |
+| `docker` | `build` | Builds Docker image (main + tags only) |
 
 ## Docker
 
